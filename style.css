@@ -1,0 +1,31 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.calculator  {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-areas: 
+        "string string string string"
+        "result result result result"
+}
+
+.calc_string {
+    grid-area: string;
+    text-align: right;
+}
+
+.expression {
+    display: inline-block;
+}
+
+.calc_result {
+    grid-area: result;
+}
+
