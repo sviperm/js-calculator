@@ -1,17 +1,17 @@
 function add(a, b) {
-    return a + b
+    return a + b;
 }
 
 function substract(a, b) {
-    return a - b
+    return a - b;
 }
 
 function multiply(a, b) {
-    return a * b
+    return a * b;
 }
 
 function divide(a, b) {
-    return b != 0 ? a / b : 'Cant divide on 0'
+    return b != 0 ? a / b : 'Cant divide on 0';
 }
 
 function operate(a, operator, b) {
@@ -27,13 +27,13 @@ function operate(a, operator, b) {
             return divide(a, b);
     }
 }
+
 // CALCULATOR VARIABLES
 const calculator = {
-    expression: '',
-    functions: [],
+    expression: [''],
     result: 0,
     isNewExpression: true,
-}
+};
 
 // DOMs
 const exprArea = document.querySelector('.expression');
@@ -43,73 +43,83 @@ const clearBtn = document.querySelector('.btn-clear');
 const backspaceBtn = document.querySelector('.btn-backspace');
 
 // FUNCTIONS
+const isNumber = (value) => !isNaN(+value);
+
 function addToExprression(value) {
-    calculator.expression += value
-    exprArea.textContent = calculator.expression
-}
+    const lastExprSymbol = calculator.expression[calculator.expression.length - 1].slice(-1);
+    if (isNumber(value)) {
+        isNumber(lastExprSymbol) ?
+            calculator.expression[calculator.expression.length - 1] += value :
+            calculator.expression.push(value);
+    } else {
+        isNumber(lastExprSymbol) ?
+            calculator.expression.push(value) :
+            calculator.expression[calculator.expression.length - 1] = value;
+    };
+    updateExpression();
+};
+
+function updateExpression() {
+    exprArea.textContent = calculator.expression.join('');
+};
 
 function clearExpression() {
-    exprArea.innerHTML = '';
-    calculator.expression = '';
-}
+    exprArea.textContent = '';
+    calculator.expression = [''];
+};
 
-function calculateResult() {
-    calculator.result = 123
-    resultArea.textContent = calculator.result
-}
+function updateResult() {
+    calculator.result = 123;
+    resultArea.textContent = calculator.result;
+};
 
 function clearResult() {
     resultArea.textContent = '';
-    calculator.result = 0
-}
+    calculator.result = 0;
+};
 
 function deleteLast() {
-    calculator.expression = calculator.expression.slice(0, -1)
-    exprArea.textContent = calculator.expression
-    if (calculator.expression.length === 0) {
-        clearExpression();
-        clearResult();
+    const lastIndex = calculator.expression.length - 1;
+
+    if (calculator.expression[lastIndex].length in [0, 1]) {
+        if (calculator.expression.length === 1) {
+            clearExpression();
+            clearResult();
+        } else {
+            calculator.expression.pop()
+            updateExpression();
+            updateResult();
+        };
     } else {
-        calculateResult();
-    }
-}
+        calculator.expression[lastIndex] = calculator.expression[lastIndex].slice(0, -1);
+        updateExpression();
+        updateResult();
+    };
+};
 
 // EVENTS
-backspaceBtn.addEventListener('click', deleteLast)
+backspaceBtn.addEventListener('click', deleteLast);
 clearBtn.addEventListener('click', () => {
     clearExpression();
     clearResult();
 });
+
 calcBtns.forEach(function (btn) {
     switch (btn.value) {
         case "=":
             btn.addEventListener('click', function () {
-                exprArea.textContent = calculator.result
-                calculator.expression = calculator.result.toString()
-                resultArea.textContent = ''
-
+                if (calculator.expression != [''] && calculator.result != 0) {
+                    calculator.expression = [`${calculator.result.toString()}`];
+                    updateExpression();
+                    resultArea.textContent = '';
+                };
             });
-            break
+            break;
         default:
             btn.addEventListener('click', function () {
-                addToExprression(btn.value)
-                calculateResult()
+                addToExprression(btn.value);
+                updateResult();
             });
             break;
     }
-    // if (btn.value != "=") {
-    //     btn.addEventListener('click', function () {
-    //         addToExprression(btn.value)
-    //         calculateResult()
-    //     })
-    // } else {
-    //     btn.addEventListener('click', function () {
-    //         console.log(calculator)
-    //         exprArea.textContent = calculator.result
-    //         calculator.expression = calculator.result.toString()
-    //         resultArea.textContent = ''
-    //         console.log(calculator)
-    //     })
-    // }
 })
-
