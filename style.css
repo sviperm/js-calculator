@@ -100,7 +100,10 @@ body {
 .btn {
     border: none;
     font-size: 1.8em;
+    background-position: center;
+    transition: background 0.4s;
 }
+
 .btn:focus {
     outline: none;
 }
@@ -108,10 +111,17 @@ body {
 .btn-num {
     color: #0D0221;
     background-color: #D7E0DC;
+    background: #D7E0DC radial-gradient(circle, transparent 1%, #D7E0DC 1%) center/13000%;
 }
 
 .btn-func {
     color: #2917D1;
     background-color: #ccd3d0;
+    background: #ccd3d0 radial-gradient(circle, transparent 1%, #ccd3d0 1%) center/13000%;
 }
 
+.btn:active {
+    background-color: #abaead;
+    background-size: 100%;
+    transition: background -1s;
+}
