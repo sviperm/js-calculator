@@ -49,10 +49,12 @@ body {
     padding-right: 10px;
     border-radius: 15px 15px 0 0;
 }
-@media only screen and (max-width: 550px)  {
+@media only screen and (max-width: 440px)  {
     .calculator {
         height: 100vh;
         width: 100vw;
+        box-shadow: none;
+        border-radius: 0;
     }
 
     .l-b-corner {
