@@ -1,3 +1,4 @@
+// TODO: float numbers
 function add(a, b) {
     return a + b;
 }
@@ -52,6 +53,7 @@ function addToExprression(value) {
             calculator.expression[calculator.expression.length - 1] += value :
             calculator.expression.push(value);
     } else {
+        // TODO: when first add +,-,/,*
         (isNumber(lastExprSymbol) && calculator.expression[calculator.expression.length - 1] != '') ?
             calculator.expression.push(value) :
             calculator.expression[calculator.expression.length - 1] = value;
