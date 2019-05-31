@@ -52,7 +52,7 @@ function addToExprression(value) {
             calculator.expression[calculator.expression.length - 1] += value :
             calculator.expression.push(value);
     } else {
-        isNumber(lastExprSymbol) ?
+        (isNumber(lastExprSymbol) && calculator.expression[calculator.expression.length - 1] != '') ?
             calculator.expression.push(value) :
             calculator.expression[calculator.expression.length - 1] = value;
     };
