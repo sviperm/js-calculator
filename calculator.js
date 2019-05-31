@@ -69,7 +69,39 @@ function clearExpression() {
 };
 
 function updateResult() {
-    calculator.result = 123;
+    function calculate(expression = calculator.expression) {
+        let localExpression = expression.slice();
+        let maxIndex = isNumber(localExpression[localExpression.length - 1]) ? localExpression.length - 1 : localExpression.length - 2;
+
+        for (let i = 0; i < maxIndex; i++) {
+            if (localExpression[i] === '×' || localExpression[i] === '/') {
+
+                if (localExpression[i] === '/' && localExpression[i + 1] === '0') return 'Are u dumbass?';
+
+                localExpression = operateWithArray(localExpression, i);
+                i--;
+                maxIndex -= 2;
+            };
+        };
+
+        for (let i = 0; i < maxIndex; i++) {
+            if (localExpression[i] === '+' || localExpression[i] === '-') {
+                localExpression = operateWithArray(localExpression, i);
+                i--;
+                maxIndex -= 2;
+            };
+        };
+
+        return parseInt(localExpression[0]);
+    }
+
+    function operateWithArray(array, index) {
+        const newElement = operate(array[index - 1], array[index], array[index + 1]).toString();
+        array.splice(index - 1, 3, newElement);
+        return array;
+    }
+
+    calculator.result = calculate();
     resultArea.textContent = calculator.result;
 };
 
