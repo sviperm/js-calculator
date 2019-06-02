@@ -132,6 +132,11 @@ function updateResult() {
     resultArea.textContent = calculator.result;
 };
 
+function addAndUpdate(value) {
+    addToExprression(value);
+    updateResult();
+}
+
 function clearResult() {
     resultArea.textContent = '';
     calculator.result = 0;
@@ -163,15 +168,13 @@ calcBtns.forEach(function (btn) {
         case '.':
             btn.addEventListener('click', function () {
                 if (calculator.expression.toString() !== '') {
-                    addToExprression(btn.value);
-                    updateResult();
+                    addAndUpdate(btn.value);
                 };
             });
             break;
         default:
             btn.addEventListener('click', function () {
-                addToExprression(btn.value);
-                updateResult();
+                addAndUpdate(btn.value);
             });
             break;
     }
