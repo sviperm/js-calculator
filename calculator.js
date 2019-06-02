@@ -165,9 +165,15 @@ calcBtns.forEach(function (btn) {
         case '-':
         case '×':
         case '/':
-        case '.':
             btn.addEventListener('click', function () {
                 if (calculator.expression.toString() !== '') {
+                    addAndUpdate(btn.value);
+                };
+            });
+            break;
+        case '.':
+            btn.addEventListener('click', function () {
+                if (calculator.expression.toString() !== '' && isNumber(calculator.expression[calculator.expression.length - 1]) && calculator.expression[calculator.expression.length - 1].indexOf('.') < 0) {
                     addAndUpdate(btn.value);
                 };
             });
