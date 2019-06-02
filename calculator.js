@@ -1,18 +1,18 @@
-// TODO: float numbers
+// CALCULATOR ENGINE
 function add(a, b) {
-    return a + b;
+    return (a + b).toFixed(14) * 1e14 / 1e14;
 }
 
 function substract(a, b) {
-    return a - b;
+    return (a - b).toFixed(14) * 1e14 / 1e14;
 }
 
 function multiply(a, b) {
-    return a * b;
+    return (a * b).toFixed(14) * 1e14 / 1e14;
 }
 
 function divide(a, b) {
-    return b != 0 ? a / b : 'Cant divide on 0';
+    return (a / b).toFixed(14) * 1e14 / 1e14;
 }
 
 function operate(a, operator, b) {
@@ -46,12 +46,15 @@ const backspaceBtn = document.querySelector('.btn-backspace');
 // FUNCTIONS
 const isNumber = (value) => !isNaN(+value);
 
+// Expression functions
 function addToExprression(value) {
     const lastExprSymbol = calculator.expression[calculator.expression.length - 1].slice(-1);
     if (isNumber(value)) {
-        isNumber(lastExprSymbol) ?
+        isNumber(lastExprSymbol) || lastExprSymbol === '.' ?
             calculator.expression[calculator.expression.length - 1] += value :
             calculator.expression.push(value);
+    } else if (value === '.') {
+        if (isNumber(lastExprSymbol)) calculator.expression[calculator.expression.length - 1] += value;
     } else {
         // TODO: when first add +,-,/,*
         (isNumber(lastExprSymbol) && calculator.expression[calculator.expression.length - 1] != '') ?
@@ -68,48 +71,6 @@ function updateExpression() {
 function clearExpression() {
     exprArea.textContent = '';
     calculator.expression = [''];
-};
-
-function updateResult() {
-    function calculate(expression = calculator.expression) {
-        let localExpression = expression.slice();
-        let maxIndex = isNumber(localExpression[localExpression.length - 1]) ? localExpression.length - 1 : localExpression.length - 2;
-
-        for (let i = 0; i < maxIndex; i++) {
-            if (localExpression[i] === '×' || localExpression[i] === '/') {
-
-                if (localExpression[i] === '/' && localExpression[i + 1] === '0') return 'Are u dumbass?';
-
-                localExpression = operateWithArray(localExpression, i);
-                i--;
-                maxIndex -= 2;
-            };
-        };
-
-        for (let i = 0; i < maxIndex; i++) {
-            if (localExpression[i] === '+' || localExpression[i] === '-') {
-                localExpression = operateWithArray(localExpression, i);
-                i--;
-                maxIndex -= 2;
-            };
-        };
-
-        return parseInt(localExpression[0]);
-    }
-
-    function operateWithArray(array, index) {
-        const newElement = operate(array[index - 1], array[index], array[index + 1]).toString();
-        array.splice(index - 1, 3, newElement);
-        return array;
-    }
-
-    calculator.result = calculate();
-    resultArea.textContent = calculator.result;
-};
-
-function clearResult() {
-    resultArea.textContent = '';
-    calculator.result = 0;
 };
 
 function deleteLast() {
@@ -131,8 +92,54 @@ function deleteLast() {
     };
 };
 
+// Result functions
+function updateResult() {
+    function calculate(expression = calculator.expression) {
+        let localExpression = expression.slice();
+        let maxIndex = isNumber(localExpression[localExpression.length - 1]) ?
+            localExpression.length - 1 :
+            localExpression.length - 2;
+
+        for (let i = 0; i < maxIndex; i++) {
+            if (localExpression[i] === '×' || localExpression[i] === '/') {
+                if (localExpression[i] === '/' && localExpression[i + 1] === '0') {
+                    return 'Are u dumbass?'
+                };
+                localExpression = operateWithArray(localExpression, i);
+                i--;
+                maxIndex -= 2;
+            };
+        };
+
+        for (let i = 0; i < maxIndex; i++) {
+            if (localExpression[i] === '+' || localExpression[i] === '-') {
+                localExpression = operateWithArray(localExpression, i);
+                i--;
+                maxIndex -= 2;
+            };
+        };
+
+        return parseFloat(localExpression[0]);
+    }
+
+    function operateWithArray(array, index) {
+        const newElement = operate(array[index - 1], array[index], array[index + 1]).toString();
+        array.splice(index - 1, 3, newElement);
+        return array;
+    }
+
+    calculator.result = calculate();
+    resultArea.textContent = calculator.result;
+};
+
+function clearResult() {
+    resultArea.textContent = '';
+    calculator.result = 0;
+};
+
 // EVENTS
 backspaceBtn.addEventListener('click', deleteLast);
+
 clearBtn.addEventListener('click', () => {
     clearExpression();
     clearResult();
@@ -142,10 +149,22 @@ calcBtns.forEach(function (btn) {
     switch (btn.value) {
         case "=":
             btn.addEventListener('click', function () {
-                if (calculator.expression != [''] && calculator.result != 0) {
+                if (calculator.expression.toString() !== '' && isNumber(calculator.result)) {
                     calculator.expression = [`${calculator.result.toString()}`];
                     updateExpression();
                     resultArea.textContent = '';
+                };
+            });
+            break;
+        case '+':
+        case '-':
+        case '×':
+        case '/':
+        case '.':
+            btn.addEventListener('click', function () {
+                if (calculator.expression.toString() !== '') {
+                    addToExprression(btn.value);
+                    updateResult();
                 };
             });
             break;
