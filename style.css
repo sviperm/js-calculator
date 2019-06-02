@@ -100,10 +100,16 @@ body {
 }
 
 .btn {
+    margin: 0;
+    padding: 0;
     border: none;
     font-size: 1.8em;
     background-position: center;
     transition: background 0.4s;
+}
+
+button::-moz-focus-inner {
+  border: 0;
 }
 
 .btn:focus {
