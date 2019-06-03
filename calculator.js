@@ -178,6 +178,13 @@ calcBtns.forEach(function (btn) {
                 };
             });
             break;
+        case '0':
+            btn.addEventListener('click', function () {
+                if (calculator.expression[calculator.expression.length - 1] !== '0') {
+                    addAndUpdate(btn.value);
+                };
+            });
+            break;
         default:
             btn.addEventListener('click', function () {
                 addAndUpdate(btn.value);
