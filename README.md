@@ -2,6 +2,7 @@
 ## [The Odin Project curriculum assignment](https://www.theodinproject.com/courses/web-development-101/lessons/calculator)
 - Smooth animation
 - Mobile friendly
+- Cross-browser
 - Custom scrollbar
 - 2 + 3 × 4 = 14
 
