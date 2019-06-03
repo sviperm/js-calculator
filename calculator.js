@@ -119,13 +119,13 @@ function updateResult() {
         };
 
         return parseFloat(localExpression[0]);
-    }
+    };
 
     function operateWithArray(array, index) {
         const newElement = operate(array[index - 1], array[index], array[index + 1]).toString();
         array.splice(index - 1, 3, newElement);
         return array;
-    }
+    };
 
     calculator.result = calculate();
     resultArea.textContent = calculator.result;
@@ -134,7 +134,7 @@ function updateResult() {
 function addAndUpdate(value) {
     addToExprression(value);
     updateResult();
-}
+};
 
 function clearResult() {
     resultArea.textContent = '';
@@ -186,5 +186,5 @@ calcBtns.forEach(function (btn) {
                 };
             });
             break;
-    }
-})
+    };
+});
