@@ -56,7 +56,6 @@ function addToExprression(value) {
     } else if (value === '.') {
         if (isNumber(lastExprSymbol)) calculator.expression[calculator.expression.length - 1] += value;
     } else {
-        // TODO: when first add +,-,/,*
         (isNumber(lastExprSymbol) && calculator.expression[calculator.expression.length - 1] != '') ?
             calculator.expression.push(value) :
             calculator.expression[calculator.expression.length - 1] = value;
